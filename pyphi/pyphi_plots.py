@@ -38,7 +38,7 @@ from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.layouts import column
 from bokeh.models import ColumnDataSource,LabelSet,Span,Legend
-import pyphi as phi
+import pyphi.pyphi as phi
 import pandas as pd
 
 import matplotlib.cm as cm
@@ -734,7 +734,7 @@ def score_scatter(mvm_obj,xydim,*,CLASSID=False,colorby=False,Xnew=False,
     for n in list(range(1,len(ObsID_)+1)):
                 ObsNum_.append(str(n))  
     
-    if isinstance(CLASSID,np.bool): # No CLASSIDS
+    if isinstance(CLASSID,bool): # No CLASSIDS
         rnd_num=str(int(np.round(1000*np.random.random_sample())))
         output_file("Score_Scatter_"+rnd_num+".html",title='Score Scatter t['+str(xydim[0])+'] - t['+str(xydim[1])+ ']')
 
@@ -922,7 +922,7 @@ def score_line(mvmobj,dim,*,CLASSID=False,colorby=False,Xnew=False,add_ci=False,
     for n in list(range(1,len(ObsID_)+1)):
         ObsNum_.append('Obs #'+str(n))  
                        
-    if isinstance(CLASSID,np.bool): # No CLASSIDS
+    if isinstance(CLASSID,bool): # No CLASSIDS
         rnd_num=str(int(np.round(1000*np.random.random_sample())))
         output_file("Score_Line_"+rnd_num+".html",title='Score Line t['+str(dim[0])+ ']')
 
@@ -1049,12 +1049,12 @@ def diagnostics(mvmobj,*,Xnew=False,Ynew=False,score_plot_xydim=False,plotwidth=
     
     """
     
-    if isinstance(score_plot_xydim,np.bool):
+    if isinstance(score_plot_xydim,bool):
         add_score_plot = False
     else:
         add_score_plot = True
         
-    if isinstance(Xnew,np.bool): #No Xnew was given need to plot all from model
+    if isinstance(Xnew,bool): #No Xnew was given need to plot all from model
         if 'obsidX' in mvmobj:
             ObsID_=mvmobj['obsidX']
         else:
@@ -1064,7 +1064,7 @@ def diagnostics(mvmobj,*,Xnew=False,Ynew=False,score_plot_xydim=False,plotwidth=
                               
         Obs_num = np.arange(mvmobj['T'].shape[0])+1
         
-        if add_score_plot and not(isinstance(score_plot_xydim,np.bool)):
+        if add_score_plot and not(isinstance(score_plot_xydim,bool)):
             t_x  = mvmobj['T'][:,[score_plot_xydim[0]-1]]
             t_y  = mvmobj['T'][:,[score_plot_xydim[1]-1]]
         else:
@@ -1102,7 +1102,7 @@ def diagnostics(mvmobj,*,Xnew=False,Ynew=False,score_plot_xydim=False,plotwidth=
             
         
         
-        if add_score_plot and not(isinstance(score_plot_xydim,np.bool)):
+        if add_score_plot and not(isinstance(score_plot_xydim,bool)):
             if 'Q' in mvmobj:  
                 xpred=phi.pls_pred(X_,mvmobj)
             else:
@@ -1117,7 +1117,7 @@ def diagnostics(mvmobj,*,Xnew=False,Ynew=False,score_plot_xydim=False,plotwidth=
         
         Obs_num = np.arange(t2_.shape[0])+1
         
-        if 'Q' in mvmobj and not(isinstance(Ynew,np.bool)):
+        if 'Q' in mvmobj and not(isinstance(Ynew,bool)):
             spex_,spey_ = phi.spe(mvmobj,Xnew,Ynew=Ynew)
         else:
             spex_ = phi.spe(mvmobj,Xnew)
@@ -1133,12 +1133,12 @@ def diagnostics(mvmobj,*,Xnew=False,Ynew=False,score_plot_xydim=False,plotwidth=
                        
                        
         if not(add_score_plot):
-            if 'Q' in mvmobj and not(isinstance(Ynew,np.bool)):
+            if 'Q' in mvmobj and not(isinstance(Ynew,bool)):
                 source = ColumnDataSource(data=dict(x=Obs_num, ObsID=ObsID_,ObsNum=ObsNum_,t2=t2_,spex=spex_,spey=spey_))  
             else:
                 source = ColumnDataSource(data=dict(x=Obs_num, ObsID=ObsID_,ObsNum=ObsNum_,t2=t2_,spex=spex_)) 
         else:
-            if 'Q' in mvmobj and not(isinstance(Ynew,np.bool)):
+            if 'Q' in mvmobj and not(isinstance(Ynew,bool)):
                 source = ColumnDataSource(data=dict(x=Obs_num, ObsID=ObsID_,ObsNum=ObsNum_,t2=t2_,spex=spex_,spey=spey_,tx=t_x,ty=t_y))  
             else:
                 source = ColumnDataSource(data=dict(x=Obs_num, ObsID=ObsID_,ObsNum=ObsNum_,t2=t2_,spex=spex_,tx=t_x,ty=t_y))
@@ -1195,7 +1195,7 @@ def diagnostics(mvmobj,*,Xnew=False,Ynew=False,score_plot_xydim=False,plotwidth=
     p_list.append(p)
     
     
-    if 'Q' in mvmobj and not(isinstance(spey_,np.bool)):
+    if 'Q' in mvmobj and not(isinstance(spey_,bool)):
         p = figure(tools=TOOLS, tooltips=TOOLTIPS, plot_height=400, title='SPE Y')
         p.circle('x','spey',source=source)
         p.line([0,Obs_num[-1]],[mvmobj['speY_lim95'],mvmobj['speY_lim95']],line_color='gold')
@@ -1311,12 +1311,12 @@ def predvsobs(mvmobj,X,Y,*,CLASSID=False,colorby=False,x_space=False):
                 ("Obs: ","@ObsID")
                 ]
     
-    if isinstance(CLASSID,np.bool): # No CLASSIDS
+    if isinstance(CLASSID,bool): # No CLASSIDS
         rnd_num=str(int(np.round(1000*np.random.random_sample())))
         output_file("ObsvsPred_"+rnd_num+".html",title='ObsvsPred')
         plot_counter=0
         
-        if not(isinstance(yhat,np.bool)): #skip if PCA model sent
+        if not(isinstance(yhat,bool)): #skip if PCA model sent
             for i in list(range(Y_.shape[1])):
                 x_ = Y_[:,i]
                 y_ = yhat[:,i]          
@@ -1368,7 +1368,7 @@ def predvsobs(mvmobj,X,Y,*,CLASSID=False,colorby=False,x_space=False):
         
         plot_counter=0
         
-        if not(isinstance(yhat,np.bool)): #skip if PCA model sent
+        if not(isinstance(yhat,bool)): #skip if PCA model sent
             for i in list(range(Y_.shape[1])):
                 x_ = Y_[:,i]
                 y_ = yhat[:,i]
@@ -1477,9 +1477,9 @@ def contributions_plot(mvmobj,X,cont_type,*,Y=False,from_obs=False,to_obs=False,
                     to_obs_.append(ObsID.index(o))
             elif isinstance(to_obs[0],int):
                 to_obs_=to_obs.copy()
-        elif isinstance(to_obs,np.bool):
+        elif isinstance(to_obs,bool):
             good_to_go=False
-        if not(isinstance(from_obs,np.bool)):
+        if not(isinstance(from_obs,bool)):
             if isinstance(from_obs,str):
                 from_obs_=ObsID.index(from_obs)
             elif isinstance(from_obs,int):
@@ -1498,13 +1498,13 @@ def contributions_plot(mvmobj,X,cont_type,*,Y=False,from_obs=False,to_obs=False,
             to_obs_=to_obs.copy()
         else:
             good_to_go=False    
-    if cont_type=='scores' and not(isinstance(Y,np.bool)):
+    if cont_type=='scores' and not(isinstance(Y,bool)):
         Y=False
         
-    if isinstance(Y,np.bool) and good_to_go:
+    if isinstance(Y,bool) and good_to_go:
         Xconts=phi.contributions(mvmobj,X,cont_type,Y=False,from_obs=from_obs_,to_obs=to_obs_,lv_space=lv_space)
         Yconts=False
-    elif not(isinstance(Y,np.bool)) and good_to_go and ('Q' in mvmobj) and cont_type=='spe':
+    elif not(isinstance(Y,bool)) and good_to_go and ('Q' in mvmobj) and cont_type=='spe':
         Xconts,Yconts=phi.contributions(mvmobj,X,cont_type,Y=Y,from_obs=from_obs_,to_obs=to_obs_,lv_space=lv_space)
     
     if 'varidX' in mvmobj:
@@ -1557,7 +1557,7 @@ def contributions_plot(mvmobj,X,cont_type,*,Y=False,from_obs=False,to_obs=False,
     p.xaxis.major_label_orientation = 45
     p_list=[p]
     
-    if not(isinstance(Yconts,np.bool)):
+    if not(isinstance(Yconts,bool)):
         if 'varidY' in mvmobj:
             YVar=mvmobj['varidY']
         else:
@@ -1616,7 +1616,7 @@ def plot_spectra(X,*,xaxis=False,plot_title='Main Title',tab_title='Tab Title',x
         elif isinstance(xaxis,list):
             x=np.array(xaxis)
             x=np.reshape(x,(1,-1))
-        elif isinstance(xaxis,np.bool):
+        elif isinstance(xaxis,bool):
             x=np.array(list(range(X.shape[1])))
             x=np.reshape(x,(1,-1))
     rnd_num=str(int(np.round(1000*np.random.random_sample())))                
