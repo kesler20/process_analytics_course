@@ -1,9 +1,0 @@
-1) Explore the location of the score solution with the given point against the mean. Can you explain the differences ?
-
-2) Assign a weight of zero (0) to one of the variables and one (1) to the other, re run the problem, where does the solution lie? 
-
-3) Switch the weights around what happens ? Why ?
-
-4) Change the Weight of the Hotelling T2 to 0.0001 and re-run both scenarios (2) and (3), what do you observe
-
-5) Change both weights to one (1) and change the hotellings T2 weight back to zero (0) and add a hard constraint for the Hotelling's T2 not to exceed the 95% CI
