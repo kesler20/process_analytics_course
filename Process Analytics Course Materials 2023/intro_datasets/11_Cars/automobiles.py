@@ -17,7 +17,6 @@ Cars_CLASSID     = pd.read_excel('Automobiles PLS.xls', 'CLASSID', index_col=Non
 Cars_Features,columns_removed_x = phi.clean_low_variances(Cars_Features)
 Cars_Performance,columns_removed_y = phi.clean_low_variances(Cars_Performance)
 
-
 # Build a PLS model with 3 PC's, cross validating by elements removing 5% of the data per round
 plsobj=phi.pls(Cars_Features,Cars_Performance,2,cross_val=5)
 # Build a PLS model with 3 PC's, cross validating by elements removing 5% of the data per round add crossval of X Space

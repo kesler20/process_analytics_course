@@ -38,7 +38,7 @@ from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.layouts import column
 from bokeh.models import ColumnDataSource,LabelSet,Span,Legend
-import pyphi.pyphi as phi
+import pyphi as phi
 import pandas as pd
 
 import matplotlib.cm as cm
