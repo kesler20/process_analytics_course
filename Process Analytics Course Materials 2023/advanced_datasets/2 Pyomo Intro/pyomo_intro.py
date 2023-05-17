@@ -32,7 +32,7 @@ def obj_(model):
     return sum(model.cost[i]*model.vols[i] for i in model.I)
 model.obj = Objective(rule=obj_) 
 
-solver = SolverFactory('glpk')
+solver = SolverFactory('gams')
 solver.solve(model,tee=True)
 
 # Use these lines to solve using the NEOS server
