@@ -1,0 +1,88 @@
+PARAMETER
+X_VARS AS ORDERED_SET
+Y_VARS AS ORDERED_SET
+A      AS INTEGER
+VARIABLE
+X_MEANS as ARRAY(X_VARS)    OF no_type
+X_STD   AS ARRAY(X_VARS)    OF no_type
+Y_MEANS as ARRAY(Y_VARS)    OF no_type
+Y_STD   AS ARRAY(Y_VARS)    OF no_type
+Ws      AS ARRAY(X_VARS,A)  OF no_type
+Q       AS ARRAY(Y_VARS,A)  OF no_type
+P       AS ARRAY(X_VARS,A)  OF no_type
+T       AS ARRAY(A)         OF no_type
+Tvar    AS ARRAY(A)         OF no_type
+X_HAT   AS ARRAY(X_VARS)    OF no_type # Mean-centered and scaled
+Y_HAT   AS ARRAY(Y_VARS)    OF no_type # Mean-centered and scaled
+X_PRED  AS ARRAY(X_VARS)    OF no_type # In original units
+Y_PRED  AS ARRAY(Y_VARS)    OF no_type # In original units
+X_NEW   AS ARRAY(X_VARS)    OF no_type # In original units
+X_MCS   AS ARRAY(X_VARS)    OF no_type # Mean-centered and scaled
+HT2                         AS no_type
+SPEX                        AS no_type
+SET
+X_VARS:=['Inlet_blend_bulk_density','Ribbon_density','Ribbon_porosity','Roll_gap_width','Gap_set_point','Roll_Force'];
+Y_VARS:=['CQA1','CQA2'];
+A:=2;
+EQUATION
+X_MCS * X_STD = (X_NEW-X_MEANS);
+FOR j:=1 TO A DO
+T(j) = SIGMA(X_MCS*Ws(,j));
+END
+FOR i IN Y_VARS DO
+Y_HAT(i) = SIGMA(T*Q(i,));
+END
+FOR i IN X_VARS DO
+X_HAT(i) = SIGMA(T*P(i,));
+END
+(X_HAT * X_STD) + X_MEANS = X_PRED;
+(Y_HAT * Y_STD) + Y_MEANS = Y_PRED;
+HT2  = SIGMA ((T^2)/Tvar);
+SPEX = SIGMA ((X_MCS - X_HAT)^2);
+ASSIGN
+X_MEANS('Inlet_blend_bulk_density') := 501.0411035714286;
+X_MEANS('Ribbon_density') := 640.9260514285714;
+X_MEANS('Ribbon_porosity') := 0.5432958664285714;
+X_MEANS('Roll_gap_width') := 2.1433494214285713;
+X_MEANS('Gap_set_point') := 2.142857142857143;
+X_MEANS('Roll_Force') := 6.964285714285714;
+X_STD('Inlet_blend_bulk_density') := 1.3438106892233355;
+X_STD('Ribbon_density') := 13.65286739532022;
+X_STD('Ribbon_porosity') := 0.010087110018987768;
+X_STD('Roll_gap_width') := 0.7704704038384066;
+X_STD('Gap_set_point') := 0.7703288865196433;
+X_STD('Roll_Force') := 0.7458677371482704;
+Y_MEANS('CQA1') := 38.103139124644976;
+Y_MEANS('CQA2') := 301.5560460659828;
+Y_STD('CQA1') := 1.0319721431949773;
+Y_STD('CQA2') := 0.4986056890957555;
+Ws('Inlet_blend_bulk_density',1) := -0.42725143403143223;
+Ws('Inlet_blend_bulk_density',2) := -0.2535283399797785;
+Ws('Ribbon_density',1) := -0.4564762957992244;
+Ws('Ribbon_density',2) := 0.24281411019388513;
+Ws('Ribbon_porosity',1) := 0.4581383549477195;
+Ws('Ribbon_porosity',2) := -0.2236251537764722;
+Ws('Roll_gap_width',1) := 0.43223925114766193;
+Ws('Roll_gap_width',2) := 0.2282394656328925;
+Ws('Gap_set_point',1) := 0.4322403670134471;
+Ws('Gap_set_point',2) := 0.22823332897598178;
+Ws('Roll_Force',1) := -0.15978844172433143;
+Ws('Roll_Force',2) := 0.8511638278918368;
+P('Inlet_blend_bulk_density',1) := -0.4391581614011676;
+P('Inlet_blend_bulk_density',2) := -0.2708617963292395;
+P('Ribbon_density',1) := -0.4465224655792445;
+P('Ribbon_density',2) := 0.2192263354500433;
+P('Ribbon_porosity',1) := 0.449027765333604;
+P('Ribbon_porosity',2) := -0.20009716208927963;
+P('Roll_gap_width',1) := 0.4432118632523692;
+P('Roll_gap_width',2) := 0.24465544180008272;
+P('Gap_set_point',1) := 0.44321263891952944;
+P('Gap_set_point',2) := 0.24464945576258798;
+P('Roll_Force',1) := -0.12314611222389252;
+P('Roll_Force',2) := 0.8478669341046151;
+Q('CQA1',1) := -0.2537879591470522;
+Q('CQA1',2) := 0.6422030498599752;
+Q('CQA2',1) := -0.4376584854684868;
+Q('CQA2',2) := -0.27939463960008837;
+Tvar(1) := 2.166244031030526;
+Tvar(2) := 1.1351730928283545;
