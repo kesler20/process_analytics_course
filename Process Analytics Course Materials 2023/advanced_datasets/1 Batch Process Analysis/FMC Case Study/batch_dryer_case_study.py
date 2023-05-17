@@ -67,7 +67,9 @@ pp.score_scatter(mpls_obj_i, [1,2],CLASSID=cat,colorby='Quality')
 mpls_obj_i_mb=phibatch.mpls(bdata_aligned_phase,cqa,5,zinit=initial_chem,
                       phase_samples=samples,mb_each_var='True')
 pp.score_scatter(mpls_obj_i_mb, [1,2],CLASSID=cat,colorby='Quality')
-pp.mb_weights(mpls_obj_i_mb )
-phibatch.loadings_abs_integral(mpls_obj)
+pp.mb_weights(mpls_obj_i_mb)
+phibatch.loadings_abs_integral(mpls_obj_i_mb)
 phibatch.loadings(mpls_obj_i_mb,1)
 #What process reccomendation would we do to minimize off-spec product ?
+
+plt.show()
