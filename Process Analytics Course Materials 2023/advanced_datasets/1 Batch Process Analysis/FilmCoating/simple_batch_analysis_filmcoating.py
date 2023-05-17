@@ -64,7 +64,6 @@ clean_batch_data=bdata_aligned_phase[np.logical_and(bdata_aligned_phase['BATCH N
 dev_batch_data=bdata_aligned_phase[np.logical_or(bdata_aligned_phase['BATCH NUMBER']=='B1905', 
                                      bdata_aligned_phase['BATCH NUMBER']=='B1805')]
 
-
 mpca_obj=phibatch.mpca(clean_batch_data,2, phase_samples=samples_per_phase,cross_val=5)
 pp.score_scatter(mpca_obj,[1,2])
 pp.diagnostics(mpca_obj)
@@ -165,7 +164,7 @@ plt.ylabel('PC[2]')
 plt.title('Scores per batch for variable wise unfolding')
 
 
-
+plt.show()
 
 
     
