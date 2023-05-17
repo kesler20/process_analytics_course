@@ -7,8 +7,8 @@ Created on Wed Apr 26 22:15:01 2023
 
 from pyomo.environ import *
 # These lines are used to send the problem to the NEOS server
-#import os
-#os.environ['NEOS_EMAIL'] = 'pyphisoftware@gmail.com' 
+import os
+os.environ['NEOS_EMAIL'] = 'uchekesla@gmail.com' 
 
 
 desired_abv = 0.04
@@ -32,12 +32,12 @@ def obj_(model):
     return sum(model.cost[i]*model.vols[i] for i in model.I)
 model.obj = Objective(rule=obj_) 
 
-solver = SolverFactory('gams')
-solver.solve(model,tee=True)
+# solver = SolverFactory('gams')
+# solver.solve(model,tee=True)
 
-# Use these lines to solve using the NEOS server
-#solver_manager = SolverManagerFactory('neos')
-#solver_manager.solve(model,opt='cbc', tee=True)
+# Use these lines to solve using the NEOS server (open source solver, if you have no solvers in your computer )
+solver_manager = SolverManagerFactory('neos')
+solver_manager.solve(model,opt='cbc', tee=True)
                 
 
 print('Optimal Blend')
