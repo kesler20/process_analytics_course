@@ -12,7 +12,7 @@ import pyphi_plots as pp
 import os
 import matplotlib.pyplot as plt
 #                           feel free to insert your own email
-os.environ['NEOS_EMAIL'] = 'pyphisoftware@gmail.com' 
+os.environ['NEOS_EMAIL'] = "uchekesla@gmail.com" 
 
 sdd_process=pd.read_excel('Spray Drying.xlsx',sheet_name='DryerConditions')
 sdd_material=pd.read_excel('Spray Drying.xlsx',sheet_name='SDDMaterial')
@@ -87,18 +87,13 @@ model.obj = Objective(rule=obj_rule)
     
 #Solve
 
-#if solving with ipopt locally with MA57
-solver = SolverFactory('ipopt')
-solver.options['linear_solver']='ma57'
-results=solver.solve(model,tee=see_solver_diagnostics)
-
 #If solving with GAMS locally (you need a GAMS license)
 #solver = SolverFactory('gams:ipopt')
 #results=solver.solve(model,tee=see_solver_diagnostics)
 
 #Use these lines to solve with NEOS freebie ! 
-#solver_manager = SolverManagerFactory('neos')
-#results = solver_manager.solve(model, opt='ipopt', tee=True)
+solver_manager = SolverManagerFactory('neos')
+results = solver_manager.solve(model, opt='ipopt', tee=True)
 
     
 x_hat = []
@@ -146,3 +141,5 @@ print('\n')
 print('Solution diagnostics')
 print('HT2 Obt: '+str( np.round(value(model.ht2),3) )+' vs limit of '+str( np.round(plsobj['T2_lim95'],3)  ))
 print('speX Obt: '+str( np.round(value(model.spe_x),3) )+' vs limit of '+str( np.round(plsobj['speX_lim99'],3)  ))
+
+plt.show()
