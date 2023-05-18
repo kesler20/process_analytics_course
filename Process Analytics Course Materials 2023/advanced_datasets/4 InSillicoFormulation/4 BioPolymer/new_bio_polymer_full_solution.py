@@ -142,6 +142,7 @@ def min_vc_const_(model):
     return model.x['VC [mol fraction]'] >=0.1
 model.min_vc_const = pyomo.Constraint(rule=min_vc_const_)
 
+# equation from ALAMO
 def calc_bp_mix_(model):
     return model.bpsolv+273.15 ==( 19.098411547735079096810 * model.x['EtOH BP 78C [mL/mol]']**2 
 	                     + 195.26400161690105505841  * model.x['DMF BP 153 C [mL/mol]']**2 
@@ -154,6 +155,7 @@ def reac_temp_const_ (model):
     return model.x['Reaction temperature [°C]']<=model.bpsolv
 model.reac_temp_const = pyomo.Constraint(rule=reac_temp_const_)       
 
+# maximize the objective function
 def obj_rule(model):
     return ( 10*model.x['VC [mol fraction]'] 
             +(model.y_hat['Avg. No. Mol. Wt., Mn [Da]'] / model.my['Avg. No. Mol. Wt., Mn [Da]'] )
