@@ -14,7 +14,7 @@ import pyomo.environ as pyomo
 import os
 
 # Feel free to use your email
-os.environ['NEOS_EMAIL'] = 'pyphisoftware@gmail.com' 
+os.environ['NEOS_EMAIL'] = 'uchekesla@gmail.com' 
 
 #This is how to fit a basic LPLS model and do some plots
 X=pd.read_excel('PharmaceuticalMaterials.xlsx',sheet_name='Materials')
@@ -162,17 +162,17 @@ def obj_rule(model):
 model.obj = pyomo.Objective(rule=obj_rule) 
 
 #if solving with ipopt locally with MA57
-pyomo.solver = pyomo.SolverFactory('ipopt')
-pyomo.solver.options['linear_solver']='ma57'
-results=pyomo.solver.solve(model,tee=see_solver_diagnostics)
+# pyomo.solver = pyomo.SolverFactory('ipopt')
+# pyomo.solver.options['linear_solver']='ma57'
+# results=pyomo.solver.solve(model,tee=see_solver_diagnostics)
 
 #If solving with GAMS locally (you need a GAMS license)
 #pyomo.solver = pyomo.SolverFactory('gams:ipopt')
 #pyomo.solver.solve(model,tee=see_solver_diagnostics)
 
 #Use these lines to solve with NEOS freebie ! 
-#pyomo.solver_manager = pyomo.SolverManagerFactory('neos')
-#pyomo.solver_manager.solve(model, opt='ipopt', tee=True)
+pyomo.solver_manager = pyomo.SolverManagerFactory('neos')
+pyomo.solver_manager.solve(model, opt='ipopt', tee=True)
 
     
 r = []
@@ -220,5 +220,5 @@ print('Solution diagnostics')
 print('HT2 Obt: '+str( np.round(pyomo.value(model.ht2),3) )+' vs limit of '+str( np.round(pls_obj['T2_lim95'],3)  ))
 print('speX Obt: '+str( np.round(pyomo.value(model.spe_rxi),3) )+' vs limit of '+str( np.round(pls_obj['speX_lim99'],3)  ))  
 
-
+plt.show()
 
