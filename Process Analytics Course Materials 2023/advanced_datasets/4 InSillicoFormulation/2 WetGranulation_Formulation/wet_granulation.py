@@ -49,7 +49,7 @@ pp.r2pv(mbplsobj,addtitle='MBPLS')
 #show that the MB scaling is included into sx so you treat it like any other PLS from the numeric standpoint
 
 #%% Run a design excercise with a plain PLS and a MBPLS and see differences.
-pls_obj=mbplsobj.copy()
+pls_obj=plsobj.copy()
 hr_target  = 1.17
 fri_target = 25
 

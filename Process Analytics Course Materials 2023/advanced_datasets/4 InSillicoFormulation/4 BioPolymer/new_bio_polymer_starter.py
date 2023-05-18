@@ -29,9 +29,10 @@ ycols=['Experiment','Cloud point [°C]','Avg. No. Mol. Wt., Mn [Da]','Recovery [
 X=data[xcols]
 Y=data[ycols]
 
-pls_obj=phi.pls(X,Y,6,cross_val=5,cross_val_X=True)
+pls_obj=phi.pls(X,Y,2,cross_val=5,cross_val_X=True)
 pp.r2pv(pls_obj,addtitle='PLS')
 
-
+pp.score_scatter(pls_obj,[1,2],add_labels=True)
+pp.loadings_map(pls_obj,[1,2])
 
 
