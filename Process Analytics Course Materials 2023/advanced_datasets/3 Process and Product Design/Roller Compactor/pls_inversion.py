@@ -11,9 +11,9 @@ import pandas as pd
 import numpy as np
 from pyomo.environ import *
 import matplotlib.pyplot as plt
-import os
-#                           feel free to insert your own email
-os.environ['NEOS_EMAIL'] = 'pyphisoftware@gmail.com' 
+# import os
+# #                           feel free to insert your own email
+# os.environ['NEOS_EMAIL'] = 'pyphisoftware@gmail.com' 
 
 
 x_space=pd.read_excel('RCDoEData.xlsx',sheet_name='Process')
@@ -46,11 +46,13 @@ yobt_a=((plsobj['Q']@tau_a)*plsobj['sy'])+plsobj['my']
 yeq         = phi.np1D2pyomo(yeq)                 #  convert numpy to dictionary
 yeq_weights = phi.np1D2pyomo(yeq_weights)         #  convert numpy to dictionary
 
-
+# initialise the model
 model             = ConcreteModel()
+# initialise a set for xs and the ys as well as the other components
 model.A           = Set(initialize = pls_obj['pyo_A'] )
 model.N           = Set(initialize = pls_obj['pyo_N'] )
 model.M           = Set(initialize = pls_obj['pyo_M'] )
+# add all the variables
 model.y_hat       = Var(model.M, within=Reals)
 model.x_hat       = Var(model.N, within=Reals)
 model.x           = Var(model.N, within=Reals)
@@ -69,7 +71,7 @@ model.yeq         = Param(model.M, initialize = yeq)
 model.yeq_weights = Param(model.M, initialize = yeq_weights)
 model.spe_lim    = Param(initialize  = pls_obj['speX_lim95'])
 model.ht2lim     = Param(initialize  = pls_obj['T2_lim99'])
-    
+
 def calc_scores(model,i):
     return model.tau[i] == sum(model.Ws[n,i] * ((model.x[n]-model.mx[n])/model.sx[n]) for n in model.N )
 model.eq1 = Constraint(model.A,rule=calc_scores)
@@ -86,10 +88,12 @@ def x_hat_calc(model,i):
     return (model.x_hat[i]-model.mx[i])/model.sx[i]==sum(model.P[i,a]*model.tau[a] for a in model.A)
 model.eq4 = Constraint(model.N,rule=x_hat_calc)
 
+# this is the soft constrain which will ask to minimise the hot t^2
 def obj_rule(model):
     return sum(model.yeq_weights[m]*(model.yeq[m]-model.y_hat[m])**2 for m in model.M)+0.000*model.ht2
 model.obj = Objective(rule=obj_rule) 
 
+# this is a hard constrain which is given a specific value to the optimiser to follow for the hot t^2
 # def ht2_lessthan(model):
 #     return model.ht2 <= model.ht2lim
 # model.ht2_hc_eq = Constraint(rule=ht2_lessthan )
@@ -98,13 +102,13 @@ model.obj = Objective(rule=obj_rule)
 #Solve
 
 #if solving with ipopt locally with MA57
-solver = SolverFactory('ipopt')
-solver.options['linear_solver']='ma57'
-results=solver.solve(model,tee=see_solver_diagnostics)
+# solver = SolverFactory('ipopt')
+# solver.options['linear_solver']='ma57'
+# results=solver.solve(model,tee=see_solver_diagnostics)
 
-#If solving with GAMS locally (you need a GAMS license)
-#solver = SolverFactory('gams:ipopt')
-#results=solver.solve(model,tee=see_solver_diagnostics)
+# If solving with GAMS locally (you need a GAMS license)
+solver = SolverFactory('gams')
+results=solver.solve(model,tee=see_solver_diagnostics)
 
 #Use these lines to solve with NEOS freebie ! 
 #solver_manager = SolverManagerFactory('neos')
@@ -187,3 +191,4 @@ plt.plot(t1_dual,t2_dual_p,':c')
 plt.plot(t1_dual,t2_dual_n,':c')
 
 
+plt.show()
