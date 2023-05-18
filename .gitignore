@@ -88,4 +88,4 @@ ENV/
 
 # Rope project settings
 .ropeproject
-process_analytics_course-env
+pac-env
