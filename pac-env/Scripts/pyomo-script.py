@@ -1,10 +1,10 @@
-#!"C:\Users\CBE-User 05\protocol\process_analytics_course\pac-env\Scripts\python.exe"
-# EASY-INSTALL-ENTRY-SCRIPT: 'pyomo==6.5.0','console_scripts','pyomo'
+#!C:\Users\Uchek\protocol\process_analytics_course\pac-env\Scripts\python.exe
+# EASY-INSTALL-ENTRY-SCRIPT: 'Pyomo==6.5.0','console_scripts','pyomo'
 import re
 import sys
 
 # for compatibility with easy_install; see #2198
-__requires__ = 'pyomo==6.5.0'
+__requires__ = 'Pyomo==6.5.0'
 
 try:
     from importlib.metadata import distribution
@@ -30,4 +30,4 @@ globals().setdefault('load_entry_point', importlib_load_entry_point)
 
 if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
-    sys.exit(load_entry_point('pyomo==6.5.0', 'console_scripts', 'pyomo')())
+    sys.exit(load_entry_point('Pyomo==6.5.0', 'console_scripts', 'pyomo')())
